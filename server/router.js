@@ -3,8 +3,8 @@ const mid = require('./middleware');
 
 const router = (app) => {
   app.get('/getToken', mid.requiresSecure, controllers.Account.getToken);
-  app.get('/getDomos', mid.requiresLogin, controllers.Domo.getDomos);
-  app.get('/getAll', mid.requiresLogin, controllers.Domo.getAll);
+  app.get('/getPictos', mid.requiresLogin, controllers.Picto.getPictos);
+  app.get('/getAll', mid.requiresLogin, controllers.Picto.getAll);
 
   app.get('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
@@ -14,10 +14,10 @@ const router = (app) => {
 
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
-  app.get('/maker', mid.requiresLogin, controllers.Domo.makerPage);
-  app.post('/maker', mid.requiresLogin, controllers.Domo.makeDomo);
+  app.get('/maker', mid.requiresLogin, controllers.Picto.makerPage);
+  app.post('/maker', mid.requiresLogin, controllers.Picto.makePicto);
 
-  app.get('/page', mid.requiresLogin, controllers.Domo.userPage);
+  app.get('/page', mid.requiresLogin, controllers.Picto.userPage);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };

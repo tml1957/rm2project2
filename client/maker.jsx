@@ -1,30 +1,20 @@
 const helper = require('./helper.js');
 
-const handleDomo = (e) => {
+const handlePicto = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#domoName').value;
-    const age = e.target.querySelector('#domoAge').value;
+    const pictoURL = canvasURLData.toDataURL();
     const _csrf = e.target.querySelector('#_csrf').value;
-    const color = e.target.querySelector('#domoColor').value;
 
-    if (!name || !age) {
-        helper.handleError('All fields are required!');
-        return false;
-    }
-
-    helper.sendPost(e.target.action, {name, age, _csrf, color}, loadDomosFromServer);
+    helper.sendPost(e.target.action, {pictoURL, _csrf}, loadPictosFromServer);
 
     return false;
 };
 
-const DomoForm = (props) => {
-
-
-
+const PictoForm = (props) => {
     return ( 
-        <body>
+        <div>
             <canvas id="mainCanvas" width="700" height="500">
             Get a real browser!
             </canvas>
@@ -37,10 +27,10 @@ const DomoForm = (props) => {
                 </label>
                 
                 <label>Line Width: 
-                    <select id="lineWidthChooser">
+                    <select id="lineWidthChooser" defaultValue={"3"}>
                         <option value="1">1</option>
                         <option value="2">2</option>
-                        <option value="3" selected>3</option>
+                        <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
                         <option value="6">6</option>
@@ -53,60 +43,59 @@ const DomoForm = (props) => {
                 
                 
                 <span><input id="clearButton" type="button" value="Clear"/></span>
-                <span><input id="exportButton" type="button" value="Export"/></span>
+                <span>
+                    <form id="pictoForm"
+                        onSubmit={handlePicto}
+                        name="pictoForm"
+                        action="/maker"
+                        method="POST"
+                        className="pictoForm"
+                    >
+                        <input type="hidden" id="_csrf" name="_csrf" value={props.csrf} />
+                        <input className="makePictoSubmit" type="submit" value="Post" />
+                    </form>
+                </span>
             </div>
 
-        </body>
+        </div>
     );
 };
 
-const DomoList = (props) => {
-    if (props.domos.length === 0) {
+const PictoList = (props) => {
+    if (props.pictos.length === 0) {
         return (
-            <div className="domoList">
-                <h3 className='emptyDomo'>No Domos Yet!</h3>
+            <div className="pictoList">
+                <h3 className='emptyPicto'>No Pictos Yet!</h3>
             </div>
         );
     }
 
-    const domoNodes = props.domos.map(domo => {
-        let srcString;
-
-        console.log(domo);
-
-        if (domo.color === "green") {
-            srcString = "/assets/img/greendomoface.jpg"
-        } else if (domo.color === "pink") {
-            srcString = "/assets/img/pinkdomoface.jpg"
-        } else {
-            srcString = "/assets/img/domoface.jpeg"
-        }
+    const pictoNodes = props.pictos.map(picto => {
+        console.log(picto);
 
         return (
-            <div key={domo._id} className="domo">
-                <img src={srcString} alt="domo face" className='domoFace' />
-                <h3 className='domoName'>Name: {domo.name} </h3>
-                <h3 className='domoAge'>Age: {domo.age} </h3>
+            <div key={picto._id} className="picto">
+                <img src={picto.pictoURL} alt="picto post" className='pictoPost' />
             </div>
         );
     });
 
     return (
-        <div className='domoList'>
-            {domoNodes}
+        <div className='pictoList'>
+            {pictoNodes}
         </div>
     );
 };
 
-const loadDomosFromServer = async () => {
-    const response = await fetch('/getDomos');
+const loadPictosFromServer = async () => {
+    const response = await fetch('/getPictos');
     const data = await response.json();
 
     console.log(data);
 
     ReactDOM.render(
-        <DomoList domos={data.domos} />,
-        document.getElementById('domos')
+        <PictoList pictos={data.pictos} />,
+        document.getElementById('pictos')
     );
 };
 
@@ -115,54 +104,55 @@ const init = async () => {
     const data = await response.json();
 
     ReactDOM.render(
-        <DomoForm csrf={data.csrfToken} />,
-        document.getElementById('makeDomo')
+        <PictoForm csrf={data.csrfToken} />,
+        document.getElementById('makePicto')
     );
 
     canvasInit();
 
     ReactDOM.render(
-        <DomoList domos={[]} />,
-        document.getElementById('domos')
+        <PictoList pictos={[]} />,
+        document.getElementById('pictos')
     );
 
-    loadDomosFromServer();
+    loadPictosFromServer();
 };
 
 // GLOBALS
-var canvas,ctx,dragging=false,lineWidth,strokeStyle;
+let canvas,ctx,dragging=false,lineWidth,strokeStyle;
 	
 // CONSTANTS
-var DEFAULT_LINE_WIDTH = 3;
-var DEFAULT_STROKE_STYLE = "red";
+let DEFAULT_LINE_WIDTH = 3;
+let DEFAULT_STROKE_STYLE = "red";
+
+let canvasURLData;
 
 
 // FUNCTIONS
 function canvasInit(){
     // initialize some globals
     canvas = document.querySelector('#mainCanvas');
+    canvasURLData = canvas;
     ctx = canvas.getContext('2d');
-lineWidth = DEFAULT_LINE_WIDTH;
-strokeStyle = DEFAULT_STROKE_STYLE;
+    lineWidth = DEFAULT_LINE_WIDTH;
+    strokeStyle = DEFAULT_STROKE_STYLE;
 
-// set initial properties of the graphics context
-ctx.lineWidth = lineWidth;
-ctx.strokeStyle = strokeStyle;
-ctx.lineCap = "round"; // "butt", "round", "square" (default "butt")
-ctx.lineJoin = "round"; // "round", "bevel", "miter" (default “miter")
+    // set initial properties of the graphics context
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = strokeStyle;
+    ctx.lineCap = "round"; // "butt", "round", "square" (default "butt")
+    ctx.lineJoin = "round"; // "round", "bevel", "miter" (default “miter")
 
-drawGrid(ctx,'lightgray', 10, 10);
+    drawGrid(ctx,'lightgray', 10, 10);
 
-canvas.onmousedown = doMousedown;
-canvas.onmousemove = doMousemove;
-canvas.onmouseup = doMouseup;
-canvas.onmouseout = doMouseout;
-    
-document.querySelector('#lineWidthChooser').onchange = doLineWidthChange;
+    canvas.onmousedown = doMousedown;
+    canvas.onmousemove = doMousemove;
+    canvas.onmouseup = doMouseup;
+    canvas.onmouseout = doMouseout;
+        
+    document.querySelector('#lineWidthChooser').onchange = doLineWidthChange;
 
-document.querySelector('#clearButton').onclick = doClear;
-document.querySelector('#exportButton').onclick = doExport;
-    
+    document.querySelector('#clearButton').onclick = doClear;
 }
 
 function doLineWidthChange(e){
@@ -173,7 +163,7 @@ function doLineWidthChange(e){
 function doMousedown(e){
     dragging = true;
     // get location of mouse in canvas coordinates
-    var mouse = getMouse(e);
+    let mouse = getMouse(e);
     // PENCIL TOOL
     ctx.beginPath();
     // move pen to x,y of mouse
@@ -184,7 +174,7 @@ function doMousedown(e){
      // bail out if the mouse button is not down
     if(! dragging) return;
     // get location of mouse in canvas coordinates
-    var mouse = getMouse(e);
+    let mouse = getMouse(e);
     // PENCIL TOOL
     // set ctx.strokeStyle and ctx.lineWidth to correct global values
     ctx.strokeStyle = strokeStyle; ctx.lineWidth = lineWidth;
@@ -211,16 +201,6 @@ function doClear(){
     drawGrid(ctx,'lightgray', 10, 10);
 }
 
-function doExport(){
-    // open a new window and load the image in it
-    // http://www.w3schools.com/jsref/met_win_open.asp
-    var data = canvas.toDataURL(); 
-    var windowName = "canvasImage";
-    var windowOptions = "left=0,top=0,width=" + canvas.width + ",height=" + canvas.height +",toolbar=0,resizable=0";
-    var myWindow = window.open(data,windowName,windowOptions);
-    myWindow.resizeTo(canvas.width,canvas.height); // needed so Chrome would display image
- }
-
 
 // UTILITY FUNCTIONS
 /*
@@ -234,7 +214,7 @@ They are "pure functions" - see: http://en.wikipedia.org/wiki/Pure_function
 // Author: Tony Jefferson
 // Last update: 3/1/2014
 function getMouse(e){
-    var mouse = {}
+    let mouse = {}
     mouse.x = e.pageX - e.target.offsetLeft;
     mouse.y = e.pageY - e.target.offsetTop;
     return mouse;
@@ -256,14 +236,14 @@ function drawGrid(ctx, color, cellWidth, cellHeight){
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     
     // vertical lines all set!
-    for (var x = cellWidth + 0.5; x < ctx.canvas.width; x += cellWidth) {
+    for (let x = cellWidth + 0.5; x < ctx.canvas.width; x += cellWidth) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, ctx.canvas.height);
         ctx.stroke();
     }
     
-    for (var y = cellHeight + 0.5; y < ctx.canvas.height; y += cellHeight) {
+    for (let y = cellHeight + 0.5; y < ctx.canvas.height; y += cellHeight) {
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(ctx.canvas.width, y);

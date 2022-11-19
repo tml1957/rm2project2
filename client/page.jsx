@@ -1,52 +1,40 @@
 const helper = require('./helper.js');
 
-const DomoList = (props) => {
-    if (props.domos.length === 0) {
+const PictoList = (props) => {
+    if (props.pictos.length === 0) {
         return (
-            <div className="domoList">
-                <h3 className='emptyDomo'>No Domos Yet!</h3>
+            <div className="pictoList">
+                <h3 className='emptyPicto'>No Pictos Yet!</h3>
             </div>
         );
     }
 
-    const domoNodes = props.domos.map(domo => {
-        let srcString;
-
-        console.log(domo);
-
-        if (domo.color === "green") {
-            srcString = "/assets/img/greendomoface.jpg"
-        } else if (domo.color === "pink") {
-            srcString = "/assets/img/pinkdomoface.jpg"
-        } else {
-            srcString = "/assets/img/domoface.jpeg"
-        }
+    const pictoNodes = props.pictos.map(picto => {
+        console.log(picto);
 
         return (
-            <div key={domo._id} className="domo">
-                <img src={srcString} alt="domo face" className='domoFace' />
-                <h3 className='domoName'>Name: {domo.name} </h3>
-                <h3 className='domoAge'>Age: {domo.age} </h3>
+            <div key={picto._id} className="picto">
+                <img src={picto.pictoURL} alt="picto post" className='pictoPost' />
             </div>
         );
     });
 
     return (
-        <div className='domoList'>
-            {domoNodes}
+        <div className='pictoList'>
+            {pictoNodes}
         </div>
     );
 };
 
-const loadDomosFromServer = async () => {
-    const response = await fetch('/getAll');
+const loadPictosFromServer = async () => {
+    const response = await fetch('/getPictos');
     const data = await response.json();
 
     console.log(data);
 
     ReactDOM.render(
-        <DomoList domos={data.domos} />,
-        document.getElementById('domos')
+        <PictoList pictos={data.pictos} />,
+        document.getElementById('pictos')
     );
 };
 
@@ -55,11 +43,11 @@ const init = async () => {
     const data = await response.json();
 
     ReactDOM.render(
-        <DomoList domos={[]} />,
-        document.getElementById('domos')
+        <PictoList pictos={[]} />,
+        document.getElementById('pictos')
     );
 
-    loadDomosFromServer();
+    loadPictosFromServer();
 };
 
 window.onload = init;
