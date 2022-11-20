@@ -70,18 +70,26 @@ const PictoList = (props) => {
         );
     }
 
-    const pictoNodes = props.pictos.map(picto => {
-        console.log(picto);
+    const node1 = <div key={props.pictos[props.pictos.length - 1]._id} className="userPicto">
+                        <img src={props.pictos[props.pictos.length - 1].pictoURL} alt="picto post" className='pictoPost' />
+                    </div>;
+    const node2 = <div key={props.pictos[props.pictos.length - 2]._id} className="userPicto">
+                        <img src={props.pictos[props.pictos.length - 2].pictoURL} alt="picto post" className='pictoPost' />
+                    </div>;
 
-        return (
-            <div key={picto._id} className="picto">
-                <img src={picto.pictoURL} alt="picto post" className='pictoPost' />
-            </div>
-        );
-    });
+    const node3 = <div key={props.pictos[props.pictos.length - 3]._id} className="userPicto">
+                        <img src={props.pictos[props.pictos.length - 3].pictoURL} alt="picto post" className='pictoPost' />
+                    </div>;
+                    
+
+    let pictoNodes = [];
+    pictoNodes[0] = node1;
+    pictoNodes[1] = node2;
+    pictoNodes[2] = node3;
 
     return (
-        <div className='pictoList'>
+        <div className='userPictoList'>
+            <h3 id="recentLabel">Your recent Pictos!</h3>
             {pictoNodes}
         </div>
     );
