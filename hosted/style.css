@@ -172,4 +172,25 @@ label{
     margin-right: auto;
     right: 0;
     left: 0;
+    width: 33%;
+ }
+
+ .scrollFeed {
+    display: block;
+    margin-top: 20px;
+ }
+
+ .pictoPost {
+    border-radius: 25px;
+    border: 6px solid black;
+    height: 40%;
+    width: auto;
+ }
+
+ .picto {
+    display: block;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 33%;
  }

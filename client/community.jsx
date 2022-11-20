@@ -9,7 +9,7 @@ const PictoList = (props) => {
         );
     }
 
-    const pictoNodes = props.pictos.map(picto => {
+    const pictoNodes = props.pictos.slice(0).reverse().map(picto => {
         console.log(picto);
 
         return (
