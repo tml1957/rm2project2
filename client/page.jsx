@@ -27,7 +27,7 @@ const PictoList = (props) => {
 };
 
 const loadPictosFromServer = async () => {
-    const response = await fetch('/getPictos');
+    const response = await fetch('/getAll');
     const data = await response.json();
 
     console.log(data);
