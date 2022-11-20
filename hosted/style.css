@@ -175,7 +175,7 @@ label{
     width: 33%;
  }
 
- .scrollFeed {
+ .scrollFeed, .gridFeed {
     display: block;
     margin-top: 20px;
  }
@@ -193,4 +193,17 @@ label{
     margin-left: auto;
     margin-right: auto;
     width: 33%;
+ }
+
+ .userPictoList {
+    display: inline-grid;
+    grid-template-columns: repeat(5, 350px [col-start]);
+ }
+
+ .userPicto {
+    display: block;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
  }

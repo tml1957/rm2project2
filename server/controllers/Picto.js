@@ -5,6 +5,7 @@ const { Picto } = models;
 
 const makerPage = (req, res) => res.render('app');
 const communityPage = (req, res) => res.render('community');
+const userPage = (req, res) => res.render('user');
 
 const makePicto = async (req, res) => {
   if (!req.body.pictoURL) {
@@ -51,6 +52,7 @@ const getAll = (req, res) => PictoModel.findAll((err, docs) => {
 module.exports = {
   makerPage,
   communityPage,
+  userPage,
   makePicto,
   getPictos,
   getAll,

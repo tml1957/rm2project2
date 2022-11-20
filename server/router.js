@@ -18,6 +18,7 @@ const router = (app) => {
   app.post('/maker', mid.requiresLogin, controllers.Picto.makePicto);
 
   app.get('/community', mid.requiresLogin, controllers.Picto.communityPage);
+  app.get('/user', mid.requiresLogin, controllers.Picto.userPage);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
