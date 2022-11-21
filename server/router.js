@@ -17,8 +17,11 @@ const router = (app) => {
   app.get('/maker', mid.requiresLogin, controllers.Picto.makerPage);
   app.post('/maker', mid.requiresLogin, controllers.Picto.makePicto);
 
+  app.get('/daily', mid.requiresLogin, controllers.Picto.dailyPage);
+
   app.get('/community', mid.requiresLogin, controllers.Picto.communityPage);
   app.get('/user', mid.requiresLogin, controllers.Picto.userPage);
+  app.get('/store', mid.requiresLogin, controllers.Store.storePage);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };

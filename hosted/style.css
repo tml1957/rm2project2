@@ -38,6 +38,16 @@ nav:nth-child(1) {
     float: left;
 }
 
+
+.selectedNav {
+    padding: 5px;
+    padding-top: 12px;
+    padding-left: 20px;
+    color: #f4ff5f;
+    font-size: 1.3em;
+    float: left;
+}
+
 .navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
     color: white;
     text-decoration: none;
@@ -47,7 +57,17 @@ nav:nth-child(1) {
     transition: background-color 0.4s ease;
 }
 
-.navlink a:hover {
+.selectedNav a, .selectedNav a:link, .selectedNav a:visited, .selectedNav a:hover, .selectedNav a:active {
+    color: #f4ff5f;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: black;
+    transition: background-color 0.4s ease;
+}
+
+
+.navlink a:hover, .selectedNav a:hover {
     transition: background-color 0.8s ease;
     background-color: #f4ff5f;
     transition: color 0.4s ease;
