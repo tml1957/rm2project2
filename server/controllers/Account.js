@@ -10,6 +10,8 @@ const signupPage = (req, res) => {
   res.render('signup', { csrfToken: req.csrfToken() });
 };
 
+const notFoundPage = (req, res) => res.render('notFound');
+
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/');
@@ -67,6 +69,7 @@ const getToken = (req, res) => res.json({ csrfToken: req.csrfToken() });
 module.exports = {
   loginPage,
   signupPage,
+  notFoundPage,
   login,
   logout,
   signup,

@@ -33,6 +33,14 @@ const AccountSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  boughtBorderPack: {
+    type: Boolean,
+    default: false,
+  },
+  boughtColorPack: {
+    type: Boolean,
+    default: false,
+  },
   createdDate: {
     type: Date,
     default: Date.now,

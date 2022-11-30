@@ -24,6 +24,8 @@ const router = (app) => {
   app.get('/store', mid.requiresLogin, controllers.Store.storePage);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
+
+  app.get('/*', controllers.Account.notFoundPage);
 };
 
 module.exports = router;
