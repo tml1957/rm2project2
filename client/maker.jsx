@@ -136,13 +136,13 @@ let allowBorder = true;
 let allowColor = true;
 
 const checkBorderStatus = async () => {
-    const response = await fetch('/getColor');
+    const response = await fetch('/getBorder');
     const data = await response.json();
 
-    if (!data.color.boughtColorPack)
+    if (!data.border.boughtBorderPack)
     {
         allowBorder = false;
-        document.querySelector('#colorSelector').innerHTML = '';
+        document.querySelector('#borderSelector').innerHTML = '';
     }
 };
 
