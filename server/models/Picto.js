@@ -14,7 +14,7 @@ const PictoSchema = new mongoose.Schema({
   },
   borderColor: {
     type: String,
-    default: "black",
+    default: 'black',
   },
   createdDate: {
     type: Date,

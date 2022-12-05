@@ -3,6 +3,7 @@ const mid = require('./middleware');
 
 const router = (app) => {
   app.get('/getToken', mid.requiresSecure, controllers.Account.getToken);
+  app.get('/getUsername', mid.requiresLogin, controllers.Account.getUsername);
   app.get('/getPictos', mid.requiresLogin, controllers.Picto.getPictos);
   app.get('/getAll', mid.requiresLogin, controllers.Picto.getAll);
   app.get('/getBorder', mid.requiresLogin, controllers.Store.getBorder);

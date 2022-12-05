@@ -64,6 +64,17 @@ const signup = async (req, res) => {
   }
 };
 
+const getUsername = (req, res) => {
+  Account.findUsername(req.session.account._id, (err, doc) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'Cant find Username' });
+    }
+
+    return res.json({ username: doc });
+  });
+};
+
 const getToken = (req, res) => res.json({ csrfToken: req.csrfToken() });
 
 module.exports = {
@@ -73,5 +84,6 @@ module.exports = {
   login,
   logout,
   signup,
+  getUsername,
   getToken,
 };

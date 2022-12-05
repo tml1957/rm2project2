@@ -1,11 +1,11 @@
 const models = require('../models');
-const AccountModel = require('../models/Account');
+const AcountModel = require('../models/Account');
 
 const { Account } = models;
 
 const storePage = (req, res) => res.render('store');
 
-const getBorder = (req, res) => AccountModel.findBorderByID(req.session.account._id, (err, docs) => {
+const getBorder = (req, res) => AcountModel.findBorderByID(req.session.account._id, (err, docs) => {
   if (err) {
     console.log(err);
     return res.status(400).json({ error: 'An error occured! ' });
@@ -14,7 +14,7 @@ const getBorder = (req, res) => AccountModel.findBorderByID(req.session.account.
   return res.json({ border: docs });
 });
 
-const getColor = (req, res) => AccountModel.findColorByID(req.session.account._id, (err, docs) => {
+const getColor = (req, res) => AcountModel.findColorByID(req.session.account._id, (err, docs) => {
   if (err) {
     console.log(err);
     return res.status(400).json({ error: 'An error occured! ' });
@@ -22,7 +22,6 @@ const getColor = (req, res) => AccountModel.findColorByID(req.session.account._i
 
   return res.json({ color: docs });
 });
-
 
 const setBorder = async (req, res) => {
   try {
