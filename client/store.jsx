@@ -4,7 +4,9 @@ const handleBorder = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    helper.sendPost(e.target.action, {}, changeBorderStatus);
+    const _csrf = e.target.querySelector('#_csrf').value;
+
+    helper.sendPost(e.target.action, {_csrf}, changeBorderStatus);
 
     return false;
 };
@@ -13,7 +15,9 @@ const handleColor = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    helper.sendPost(e.target.action, {}, changeColorStatus);
+    const _csrf = e.target.querySelector('#_csrf').value;
+
+    helper.sendPost(e.target.action, {_csrf}, changeColorStatus);
 
     return false;
 };
@@ -24,6 +28,7 @@ const BorderForm = (props) => {
             <p>Gain access to new borders for your pictos!
             <br></br><br></br>
             Included in this package:<br></br>
+            </p>
             <ul>
                 <li>
                     Gold
@@ -35,7 +40,7 @@ const BorderForm = (props) => {
                     Platinum
                 </li>
             </ul>
-            </p>
+            
             <form id="borderForm"
                 onSubmit={handleBorder}
                 name="borderForm"
@@ -56,6 +61,7 @@ const ColorForm = (props) => {
             <p>Gain access to new colors to use in your pictos!
             <br></br><br></br>
             Included in this package:<br></br>
+            </p>
             <ul>
                 <li>
                     Black
@@ -67,7 +73,6 @@ const ColorForm = (props) => {
                     Blue
                 </li>
             </ul>
-            </p>
             <form id="colorForm"
                 onSubmit={handleColor}
                 name="colorForm"
@@ -90,19 +95,56 @@ const changeColorStatus = () => {
     document.querySelector('#colorPurchaseForm').innerHTML = 'PURCHASED!';
 };
 
+let showBorderForm = true;
+let showColorForm = true;
+
+const checkBorderStatus = async () => {
+    const response = await fetch('/getBorder');
+    const data = await response.json();
+
+    console.log(data);
+
+    if (data.border.boughtBorderPack)
+    {
+        changeBorderStatus();
+        showBorderForm = false;
+    }
+};
+
+const checkColorStatus = async () => {
+    const response = await fetch('/getColor');
+    const data = await response.json();
+
+    console.log(data);
+
+    if (data.color.boughtColorPack)
+    {
+        changeColorStatus();
+        showColorForm = false;
+    }
+};
+
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
 
-    ReactDOM.render(
-        <BorderForm csrf={data.csrfToken} />,
-        document.getElementById('borderForm')
-    );
+    checkBorderStatus();
 
-    ReactDOM.render(
-        <ColorForm csrf={data.csrfToken} />,
-        document.getElementById('colorForm')
-    );
+    if (showBorderForm) {
+        ReactDOM.render(
+            <BorderForm csrf={data.csrfToken} />,
+            document.getElementById('borderForm')
+        );
+    }
+
+    checkColorStatus();
+
+    if (showColorForm) {
+        ReactDOM.render(
+            <ColorForm csrf={data.csrfToken} />,
+            document.getElementById('colorForm')
+        );
+    }
 };
 
 window.onload = init;
