@@ -6,6 +6,7 @@ module.exports = {
         login: './client/login.jsx',
         community: './client/community.jsx',
         user: './client/user.jsx',
+        store: './client/store.jsx',
     },
     module: {
         rules: [

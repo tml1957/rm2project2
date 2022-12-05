@@ -5,6 +5,11 @@ const router = (app) => {
   app.get('/getToken', mid.requiresSecure, controllers.Account.getToken);
   app.get('/getPictos', mid.requiresLogin, controllers.Picto.getPictos);
   app.get('/getAll', mid.requiresLogin, controllers.Picto.getAll);
+  app.get('/getBorder', mid.requiresLogin, controllers.Store.getBorder);
+  app.get('/getColor', mid.requiresLogin, controllers.Store.getColor);
+
+  app.post('/setBorder', mid.requiresLogin, controllers.Store.setBorder);
+  app.post('/setColor', mid.requiresLogin, controllers.Store.setColor);
 
   app.get('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
   app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);

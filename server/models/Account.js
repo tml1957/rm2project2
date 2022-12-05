@@ -50,6 +50,8 @@ const AccountSchema = new mongoose.Schema({
 // Converts a doc to something we can store in redis later on.
 AccountSchema.statics.toAPI = (doc) => ({
   username: doc.username,
+  boughtBorderPack: doc.boughtBorderPack,
+  boughtColorPack: doc.boughtColorPack,
   _id: doc._id,
 });
 
@@ -78,6 +80,28 @@ AccountSchema.statics.authenticate = async (username, password, callback) => {
   } catch (err) {
     return callback(err);
   }
+};
+
+AccountSchema.statics.findBorderByID = (sessionId, callback) => {
+  AccountModel.findOne({ _id: sessionId }).select('boughtBorderPack').lean().exec(callback);
+};
+
+AccountSchema.statics.findColorByID = (sessionId, callback) => {
+  AccountModel.findOne({ _id: sessionId }).select('boughtColorPack').lean().exec(callback);
+};
+
+AccountSchema.statics.updateBorder = async (filter) => {
+  const doc = await AccountModel.updateOne(filter, { boughtBorderPack: true });
+  return doc;
+};
+
+AccountSchema.statics.updateColor = async (filter) => {
+  const doc = await AccountModel.updateOne(filter, { boughtColorPack: true });
+  return doc;
+};
+
+AccountSchema.statics.findUsername = (sessionId, callback) => {
+  AccountModel.findOne({ _id: sessionId }).select('username').lean().exec(callback);
 };
 
 AccountModel = mongoose.model('Account', AccountSchema);
