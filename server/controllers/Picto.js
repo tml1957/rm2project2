@@ -16,13 +16,14 @@ const makePicto = async (req, res) => {
   const pictoData = {
     owner: req.session.account._id,
     pictoURL: req.body.pictoURL,
+    borderColor: req.body.borderColor,
   };
 
   try {
     const newPicto = new Picto(pictoData);
     await newPicto.save();
 
-    return res.status(201).json({ pictoURL: newPicto.pictoURL });
+    return res.status(201).json({ pictoURL: newPicto.pictoURL, borderColor: newPicto.borderColor });
   } catch (err) {
     console.log(err);
     if (err.code === 11000) {

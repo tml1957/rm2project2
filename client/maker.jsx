@@ -7,7 +7,13 @@ const handlePicto = (e) => {
     const pictoURL = canvasURLData.toDataURL();
     const _csrf = e.target.querySelector('#_csrf').value;
 
-    helper.sendPost(e.target.action, {pictoURL, _csrf}, loadPictosFromServer);
+    let borderColor;
+    if (allowBorder)
+        borderColor = e.target.querySelector('#borderChooser').value;
+    else
+        borderColor = 'Black';
+    
+    helper.sendPost(e.target.action, {pictoURL, borderColor, _csrf}, loadPictosFromServer);
 
     return false;
 };
@@ -41,6 +47,16 @@ const PictoForm = (props) => {
                     </select>
                 </label>
                 
+                <div id="colorSelector">
+                    <label>Color: 
+                        <select id="colorChooser" defaultValue={"Red"}>
+                            <option value="red">Red</option>
+                            <option value="black">Black</option>
+                            <option value="orange">Orange</option>
+                            <option value="blue">Blue</option>
+                        </select>
+                    </label>
+                </div>
                 
                 <span><input id="clearButton" type="button" value="Clear"/></span>
                 <span>
@@ -51,6 +67,15 @@ const PictoForm = (props) => {
                         method="POST"
                         className="pictoForm"
                     >
+                        <div id="borderSelector">
+                            <label>Border: 
+                                <select id="borderChooser" defaultValue={"Black"}>
+                                    <option value="Black">Black</option>
+                                    <option value="Purple">Purple</option>
+                                    <option value="Gold">Gold</option>
+                                </select>
+                            </label>
+                        </div>
                         <input type="hidden" id="_csrf" name="_csrf" value={props.csrf} />
                         <input className="makePictoSubmit" type="submit" value="Post" />
                     </form>
@@ -71,14 +96,14 @@ const PictoList = (props) => {
     }
 
     const node1 = <div key={props.pictos[props.pictos.length - 1]._id} className="userPicto">
-                        <img src={props.pictos[props.pictos.length - 1].pictoURL} alt="picto post" className='pictoPost' />
+                        <img src={props.pictos[props.pictos.length - 1].pictoURL} alt="picto post" className={`pictoPost${picto.borderColor}`} />
                     </div>;
     const node2 = <div key={props.pictos[props.pictos.length - 2]._id} className="userPicto">
-                        <img src={props.pictos[props.pictos.length - 2].pictoURL} alt="picto post" className='pictoPost' />
+                        <img src={props.pictos[props.pictos.length - 2].pictoURL} alt="picto post" className={`pictoPost${picto.borderColor}`} />
                     </div>;
 
     const node3 = <div key={props.pictos[props.pictos.length - 3]._id} className="userPicto">
-                        <img src={props.pictos[props.pictos.length - 3].pictoURL} alt="picto post" className='pictoPost' />
+                        <img src={props.pictos[props.pictos.length - 3].pictoURL} alt="picto post" className={`pictoPost${picto.borderColor}`} />
                     </div>;
                     
 
@@ -107,15 +132,43 @@ const loadPictosFromServer = async () => {
     );
 };
 
+let allowBorder = true;
+let allowColor = true;
+
+const checkBorderStatus = async () => {
+    const response = await fetch('/getColor');
+    const data = await response.json();
+
+    if (!data.color.boughtColorPack)
+    {
+        allowBorder = false;
+        document.querySelector('#colorSelector').innerHTML = '';
+    }
+};
+
+const checkColorStatus = async () => {
+    const response = await fetch('/getColor');
+    const data = await response.json();
+
+    if (!data.color.boughtColorPack)
+    {
+        allowColor = false;
+        document.querySelector('#colorSelector').innerHTML = '';
+    }
+};
+
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
+
+    checkBorderStatus();
 
     ReactDOM.render(
         <PictoForm csrf={data.csrfToken} />,
         document.getElementById('makePicto')
     );
-
+    
+    checkColorStatus();
     canvasInit();
 
     ReactDOM.render(
@@ -160,11 +213,18 @@ function canvasInit(){
         
     document.querySelector('#lineWidthChooser').onchange = doLineWidthChange;
 
+    if (allowColor)
+        document.querySelector('#colorChooser').onchange = doColorChange;
+
     document.querySelector('#clearButton').onclick = doClear;
 }
 
 function doLineWidthChange(e){
     lineWidth = e.target.value;
+}
+
+function doColorChange(e){
+    strokeStyle = e.target.value;
 }
 
 // EVENT CALLBACK FUNCTIONS

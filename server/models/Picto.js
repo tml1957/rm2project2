@@ -12,6 +12,10 @@ const PictoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  borderColor: {
+    type: String,
+    default: "black",
+  },
   createdDate: {
     type: Date,
     default: Date.now,
@@ -20,6 +24,7 @@ const PictoSchema = new mongoose.Schema({
 
 PictoSchema.statics.toAPI = (doc) => ({
   pictoURL: doc.pictoURL,
+  borderColor: doc.borderColor,
 });
 
 PictoSchema.statics.findByOwner = (ownerId, callback) => {
@@ -28,10 +33,10 @@ PictoSchema.statics.findByOwner = (ownerId, callback) => {
     owner: mongoose.Types.ObjectId(ownerId),
   };
 
-  return PictoModel.find(search).select('pictoURL').lean().exec(callback);
+  return PictoModel.find(search).select('pictoURL borderColor').lean().exec(callback);
 };
 
-PictoSchema.statics.findAll = (callback) => PictoModel.find().select('pictoURL').lean().exec(callback);
+PictoSchema.statics.findAll = (callback) => PictoModel.find().select('pictoURL borderColor').lean().exec(callback);
 
 PictoModel = mongoose.model('Picto', PictoSchema);
 

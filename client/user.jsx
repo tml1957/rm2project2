@@ -14,7 +14,7 @@ const PictoList = (props) => {
 
         return (
             <div key={picto._id} className="userPicto">
-                <img src={picto.pictoURL} alt="picto post" className='pictoPost' />
+                <img src={picto.pictoURL} alt="picto post" className={`pictoPost${picto.borderColor}`} />
             </div>
         );
     });

@@ -202,9 +202,23 @@ label{
     margin-top: 20px;
  }
 
- .pictoPost {
+ .pictoPostBlack {
     border-radius: 25px;
     border: 6px solid black;
+    height: 40%;
+    width: auto;
+ }
+
+ .pictoPostPurple {
+    border-radius: 25px;
+    border: 6px solid purple;
+    height: 40%;
+    width: auto;
+ }
+
+ .pictoPostGold {
+    border-radius: 25px;
+    border: 6px solid gold;
     height: 40%;
     width: auto;
  }
