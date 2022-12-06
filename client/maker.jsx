@@ -13,9 +13,13 @@ const handlePicto = (e) => {
     else
         borderColor = 'Black';
     
-    helper.sendPost(e.target.action, {pictoURL, borderColor, _csrf}, loadPictosFromServer);
+    helper.sendPost(e.target.action, {pictoURL, borderColor, _csrf}, Success);
 
     return false;
+};
+
+const Success = () => {
+    console.log("successful post!");
 };
 
 const PictoForm = (props) => {
@@ -86,52 +90,6 @@ const PictoForm = (props) => {
     );
 };
 
-const PictoList = (props) => {
-    if (props.pictos.length === 0) {
-        return (
-            <div className="pictoList">
-                <h3 className='emptyPicto'>No Pictos Yet!</h3>
-            </div>
-        );
-    }
-
-    const node1 = <div key={props.pictos[props.pictos.length - 1]._id} className="userPicto">
-                        <img src={props.pictos[props.pictos.length - 1].pictoURL} alt="picto post" className={`pictoPost${picto.borderColor}`} />
-                    </div>;
-    const node2 = <div key={props.pictos[props.pictos.length - 2]._id} className="userPicto">
-                        <img src={props.pictos[props.pictos.length - 2].pictoURL} alt="picto post" className={`pictoPost${picto.borderColor}`} />
-                    </div>;
-
-    const node3 = <div key={props.pictos[props.pictos.length - 3]._id} className="userPicto">
-                        <img src={props.pictos[props.pictos.length - 3].pictoURL} alt="picto post" className={`pictoPost${picto.borderColor}`} />
-                    </div>;
-                    
-
-    let pictoNodes = [];
-    pictoNodes[0] = node1;
-    pictoNodes[1] = node2;
-    pictoNodes[2] = node3;
-
-    return (
-        <div className='userPictoList'>
-            <h3 id="recentLabel">Your recent Pictos!</h3>
-            {pictoNodes}
-        </div>
-    );
-};
-
-const loadPictosFromServer = async () => {
-    const response = await fetch('/getPictos');
-    const data = await response.json();
-
-    console.log(data);
-
-    ReactDOM.render(
-        <PictoList pictos={data.pictos} />,
-        document.getElementById('pictos')
-    );
-};
-
 let allowBorder = true;
 let allowColor = true;
 
@@ -170,13 +128,6 @@ const init = async () => {
     
     checkColorStatus();
     canvasInit();
-
-    ReactDOM.render(
-        <PictoList pictos={[]} />,
-        document.getElementById('pictos')
-    );
-
-    loadPictosFromServer();
 };
 
 // GLOBALS
