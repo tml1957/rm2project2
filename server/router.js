@@ -18,6 +18,8 @@ const router = (app) => {
   app.get('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signupPage);
   app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
 
+  app.get('/change', mid.requiresLogin, controllers.Account.changePage);
+  app.post('/change', mid.requiresLogin, controllers.Account.changePassword);
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
   app.get('/maker', mid.requiresLogin, controllers.Picto.makerPage);

@@ -3,7 +3,7 @@ const helper = require('./helper.js');
 const PictoList = (props) => {
     if (props.pictos.length === 0) {
         return (
-            <div className="pictoList">
+            <div className="pictoList centerAlign">
                 <h3 className='emptyPicto'>No Pictos Yet!</h3>
             </div>
         );
@@ -38,6 +38,18 @@ const loadPictosFromServer = async () => {
     );
 };
 
+const loadUsername = async () => {
+    const response = await fetch('/getUsername');
+    const data = await response.json();
+
+    console.log(data);
+
+    ReactDOM.render(
+        <h1 className="centerAlign">{data.username.username}'s Page</h1>,
+        document.getElementById('username')
+    );
+};
+
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
@@ -47,6 +59,7 @@ const init = async () => {
         document.getElementById('pictos')
     );
 
+    loadUsername();
     loadPictosFromServer();
 };
 

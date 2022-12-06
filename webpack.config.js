@@ -7,6 +7,7 @@ module.exports = {
         community: './client/community.jsx',
         user: './client/user.jsx',
         store: './client/store.jsx',
+        change: './client/change.jsx',
     },
     module: {
         rules: [

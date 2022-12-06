@@ -83,48 +83,46 @@ label{
 
 
 .mainForm {
-    height: 300px;
     width: 350px;
     margin: 0 auto;
-    padding-top: 350px;
+    padding-top: 100px;
     font-size: 1.2em;
 }
 
 .mainForm h3 {
-    text-align: center;
+    text-align: left;
 }
 
 .mainForm label {
     display: inline-block;
     width: 100px;
     margin-right: 10px;
-    text-align: right;
+    text-align: center;
     font-size: 1.2em;
 }
 
-.formSubmit {
+.signInSubmit {
     transition: background-color 0.4s ease;
     display: block;
     text-align: center;
     margin: 0 auto;
+    width: 60%;
     margin-top: 14px;
     font-size: 1.2em;
-    width: 100px;
-    background-color: #55acee;
-    border-radius: 2px;
-    border-color: #66acee;
+    background-color: #000000;
     padding: 3px 0px;
     color: white;
     text-decoration: none;
 }
 
-.formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
+.signInSubmit:link, .signInSubmit:visited, .signInSubmit:hover, .signInSubmit:active {
     color: white;
 }
 
-.formSubmit:hover {
+.signInSubmit:hover {
     transition: background-color 0.4s ease;
-    background-color: #338acc;
+    background-color: #f4ff5f;
+    color: black;
 }
 
 #user, #pass, #pass2 {
@@ -134,50 +132,49 @@ label{
     border-radius: 6px;
 }
 
-#user:focus, #pass:focus, #pass2:focus {
-    outline: none;
-    box-shadow: 0px 0px 1px 1px #55acee;
-}
-
 .hidden {
     display: none;
 }
 
 #pictoMessage {
-    top: 250px;
     width: 250px;
-    height: 650px;
-    position: absolute;
     z-index: 200;
+    width: 33%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
     right: 0px;
+    border: 6px solid black;
     overflow: hidden;
 }
 
-#pictoMessage h3 {
-    width: 200px;
-    position: absolute;
-    top: 0px;
-    left: 20px;
-}
-
-#speech {
-    height: 120px;
-    width: 250px;
-    z-index:300;
-}
 
 #errorMessage {
     font-size: 1.2em;
     font-weight: bold;
-    color: red;
-    font-style: italic;
+    color: black;
+}
+
+.centerAlign {
+    text-align: center;
+    display: block;
+    width: 33%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
+
+.rightAlign {
+    float: right;
+    width: 300px;
+    padding: 10px;
 }
 
 #mainCanvas {
     display: block;
     background: #ffffff;
     z-index: 0;
-    left: 10px;
     margin-top: 20px;
     box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
     margin-left: auto;

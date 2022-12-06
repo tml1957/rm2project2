@@ -12,6 +12,8 @@ const signupPage = (req, res) => {
 
 const notFoundPage = (req, res) => res.render('notFound');
 
+const changePage = (req, res) => res.render('change');
+
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/');
@@ -75,12 +77,33 @@ const getUsername = (req, res) => {
   });
 };
 
+const changePassword = async (req, res) => {
+  const pass = `${req.body.pass}`;
+  const pass2 = `${req.body.pass2}`;
+
+  if (!pass || !pass2) {
+    return res.status(400).json({ error: 'Bro enter a password!' });
+  }
+
+  if (pass !== pass2) {
+    return res.status(400).json({ error: 'Your new passwords do not match!' });
+  }
+
+  const hash = await Account.generateHash(pass);
+
+  await Account.changePassword(req.session.account._id, hash);
+
+  return res.status(200).json({ error: 'Password updated' });
+};
+
 const getToken = (req, res) => res.json({ csrfToken: req.csrfToken() });
 
 module.exports = {
   loginPage,
   signupPage,
   notFoundPage,
+  changePage,
+  changePassword,
   login,
   logout,
   signup,

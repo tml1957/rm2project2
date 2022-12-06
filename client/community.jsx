@@ -3,7 +3,7 @@ const helper = require('./helper.js');
 const PictoList = (props) => {
     if (props.pictos.length === 0) {
         return (
-            <div className="pictoList">
+            <div className="pictoList centerAlign">
                 <h3 className='emptyPicto'>No Pictos Yet!</h3>
             </div>
         );

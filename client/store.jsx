@@ -28,18 +28,9 @@ const BorderForm = (props) => {
             <p>Gain access to new borders for your pictos!
             <br></br><br></br>
             Included in this package:<br></br>
+            - Gold <br></br>
+            - Purple <br></br>
             </p>
-            <ul>
-                <li>
-                    Gold
-                </li>
-                <li>
-                    Purple
-                </li>
-                <li>
-                    Platinum
-                </li>
-            </ul>
             
             <form id="borderForm"
                 onSubmit={handleBorder}
@@ -61,18 +52,10 @@ const ColorForm = (props) => {
             <p>Gain access to new colors to use in your pictos!
             <br></br><br></br>
             Included in this package:<br></br>
+            - Black <br></br>
+            - Orange <br></br>
+            - Blue <br></br>
             </p>
-            <ul>
-                <li>
-                    Black
-                </li>
-                <li>
-                    Orange
-                </li>
-                <li>
-                    Blue
-                </li>
-            </ul>
             <form id="colorForm"
                 onSubmit={handleColor}
                 name="colorForm"
