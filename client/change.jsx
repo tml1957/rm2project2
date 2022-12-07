@@ -1,19 +1,20 @@
 const helper = require('./helper.js');
 
-
+//Handles sending the post request for the password change
 const handleChange = (e) => {
     e.preventDefault();
     helper.hideError();
 
+    //Takes values from the pass word change form
     const pass = e.target.querySelector('#pass').value;
     const pass2 = e.target.querySelector('#pass2').value;
     const _csrf = e.target.querySelector('#_csrf').value;
 
+    //Ensures user entered password and that passwords match
     if(!pass || !pass2) {
         helper.handleError('Bro enter a password!');
         return false;
     }
-
     if(!pass !== !pass2) {
         helper.handleError('Your new passwords do not match!');
         return false;
@@ -24,6 +25,7 @@ const handleChange = (e) => {
     return false;
 }
 
+//Returns the change password form
 const ChangePassWindow = (props) => {
     return (
         <form id="changeForm"
@@ -43,12 +45,13 @@ const ChangePassWindow = (props) => {
     );
 };
 
+//Initalizes the change password form for the handlebars page.
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
 
     ReactDOM.render(<ChangePassWindow csrf={data.csrfToken} />,
-        document.getElementById('content'));
+    document.getElementById('content'));
 };
 
 window.onload = init;

@@ -1,5 +1,6 @@
 const helper = require('./helper.js');
 
+//Handles border puschase form post requests
 const handleBorder = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -11,6 +12,7 @@ const handleBorder = (e) => {
     return false;
 };
 
+//Handles color purchase form post requests
 const handleColor = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -22,6 +24,7 @@ const handleColor = (e) => {
     return false;
 };
 
+//Returns the border purchase form
 const BorderForm = (props) => {
     return ( 
         <div id='borderPurchaseForm'>
@@ -46,6 +49,7 @@ const BorderForm = (props) => {
     );
 };
 
+//Returns the color purchase form
 const ColorForm = (props) => {
     return ( 
         <div id='colorPurchaseForm'>
@@ -70,17 +74,22 @@ const ColorForm = (props) => {
     );
 };
 
+//Once borders have been purchased, replace the form with "PURCHASED"
 const changeBorderStatus = () => {
     document.querySelector('#borderPurchaseForm').innerHTML = 'PURCHASED!';
 };
 
+//Once colors have been purchased, replace the form with "PURCHASED"
 const changeColorStatus = () => {
     document.querySelector('#colorPurchaseForm').innerHTML = 'PURCHASED!';
 };
 
+//Variables to determine whether or not to show the forms
 let showBorderForm = true;
 let showColorForm = true;
 
+//Makes get request to see if borders have been purchased
+//If they have, call the change status method
 const checkBorderStatus = async () => {
     const response = await fetch('/getBorder');
     const data = await response.json();
@@ -94,6 +103,8 @@ const checkBorderStatus = async () => {
     }
 };
 
+//Makes get request to see if colors have been purchased
+//If they have, call the change status method
 const checkColorStatus = async () => {
     const response = await fetch('/getColor');
     const data = await response.json();
@@ -107,6 +118,7 @@ const checkColorStatus = async () => {
     }
 };
 
+//Initalizes border and color forms
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();

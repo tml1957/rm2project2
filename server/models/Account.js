@@ -21,6 +21,8 @@ let AccountModel = {};
    characters), a password (actually the hashed version of the password created
    by bcrypt), and the created date.
 */
+// Account schema tracks username, password (hashed), booleans
+// to track if the user has bought the expansion packs, and the created date
 const AccountSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -82,38 +84,44 @@ AccountSchema.statics.authenticate = async (username, password, callback) => {
   }
 };
 
+// Uses findOne to get the user's boughtBorderPack boolean
 AccountSchema.statics.findBorderByID = (sessionId, callback) => {
   AccountModel.findOne({ _id: sessionId }).select('boughtBorderPack').lean().exec(callback);
 };
 
+// Uses findOne to get the user's boughtColorPack boolean
 AccountSchema.statics.findColorByID = (sessionId, callback) => {
   AccountModel.findOne({ _id: sessionId }).select('boughtColorPack').lean().exec(callback);
 };
 
+// Updates the border boolean to true
 AccountSchema.statics.updateBorder = async (filter) => {
   const doc = await AccountModel.updateOne(filter, { boughtBorderPack: true });
   return doc;
 };
 
+// Updates the Color boolean to true
 AccountSchema.statics.updateColor = async (filter) => {
   const doc = await AccountModel.updateOne(filter, { boughtColorPack: true });
   return doc;
 };
 
+// Uses findOne boolean to return the user's username
 AccountSchema.statics.findUsername = (sessionId, callback) => {
   AccountModel.findOne({ _id: sessionId }).select('username').lean().exec(callback);
 };
 
+// Uses findOne to return the user's password
 AccountSchema.statics.findPassword = async (objectId) => {
   const doc = await AccountModel.findOne({ _id: objectId }).exec();
   return doc;
 };
 
+// Uses findOneAndUpdate to update only the user's password to the new password
 AccountSchema.statics.changePassword = async (objectId, pass) => {
   const doc = await AccountModel.findOneAndUpdate({ _id: objectId }, { password: pass });
   return doc;
 };
-
 
 AccountModel = mongoose.model('Account', AccountSchema);
 module.exports = AccountModel;

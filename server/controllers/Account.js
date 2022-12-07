@@ -2,23 +2,29 @@ const models = require('../models');
 
 const { Account } = models;
 
+// Render login page
 const loginPage = (req, res) => {
   res.render('login', { csrfToken: req.csrfToken() });
 };
 
+// Render signup page
 const signupPage = (req, res) => {
   res.render('signup', { csrfToken: req.csrfToken() });
 };
 
+// Render not found page
 const notFoundPage = (req, res) => res.render('notFound');
 
+// Render change password page
 const changePage = (req, res) => res.render('change');
 
+// Log user out
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/');
 };
 
+// Handles login post requests to the server
 const login = (req, res) => {
   const username = `${req.body.username}`;
   const pass = `${req.body.pass}`;
@@ -38,6 +44,7 @@ const login = (req, res) => {
   });
 };
 
+// Handles signup post requests to the server
 const signup = async (req, res) => {
   const username = `${req.body.username}`;
   const pass = `${req.body.pass}`;
@@ -66,6 +73,7 @@ const signup = async (req, res) => {
   }
 };
 
+// Handles get requests for the current username
 const getUsername = (req, res) => {
   Account.findUsername(req.session.account._id, (err, doc) => {
     if (err) {
@@ -77,20 +85,24 @@ const getUsername = (req, res) => {
   });
 };
 
+// Handles password changes
 const changePassword = async (req, res) => {
+  // Takes both passwords from the requers submissione
   const pass = `${req.body.pass}`;
   const pass2 = `${req.body.pass2}`;
 
+  // Double checks to see that both passwords match and are valid
   if (!pass || !pass2) {
     return res.status(400).json({ error: 'Bro enter a password!' });
   }
-
   if (pass !== pass2) {
     return res.status(400).json({ error: 'Your new passwords do not match!' });
   }
 
+  // Generates a hash from the new password
   const hash = await Account.generateHash(pass);
 
+  // Update the user's password with the new hashed password
   await Account.changePassword(req.session.account._id, hash);
 
   return res.status(200).json({ error: 'Password updated' });

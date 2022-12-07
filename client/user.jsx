@@ -1,6 +1,9 @@
 const helper = require('./helper.js');
 
+//Returns all of the users pictos as div elements using retrieved info from mongo
 const PictoList = (props) => {
+
+    //If there are no pictos in the server return a message
     if (props.pictos.length === 0) {
         return (
             <div className="pictoList centerAlign">
@@ -8,7 +11,7 @@ const PictoList = (props) => {
             </div>
         );
     }
-
+    //Map all retrieved pictos to div elements in a reverse order
     const pictoNodes = props.pictos.slice(0).reverse().map(picto => {
         console.log(picto);
 
@@ -19,6 +22,7 @@ const PictoList = (props) => {
         );
     });
 
+    //Return pictos
     return (
         <div className='userPictoList'>
             {pictoNodes}
@@ -26,6 +30,7 @@ const PictoList = (props) => {
     );
 };
 
+//Retrieves only user pictos from the server
 const loadPictosFromServer = async () => {
     const response = await fetch('/getPictos');
     const data = await response.json();
@@ -38,18 +43,21 @@ const loadPictosFromServer = async () => {
     );
 };
 
+//Sends get request to retrieve username
 const loadUsername = async () => {
     const response = await fetch('/getUsername');
     const data = await response.json();
 
     console.log(data);
 
+    //Will display username at the top of the page
     ReactDOM.render(
         <h1 className="centerAlign">{data.username.username}'s Page</h1>,
         document.getElementById('username')
     );
 };
 
+//Initializes pictolist and loads in data and username
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();

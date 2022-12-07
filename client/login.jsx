@@ -1,13 +1,16 @@
 const helper = require('./helper.js');
 
+//Handles the login post request using the helper sendPost function
 const handleLogin = (e) => {
     e.preventDefault();
     helper.hideError();
 
+    //Retrieves data from login form
     const username = e.target.querySelector('#user').value;
     const pass = e.target.querySelector('#pass').value;
     const _csrf = e.target.querySelector('#_csrf').value;
 
+    //Check to see if both username and password have been entered
     if(!username || !pass) {
         helper.handleError('Username or password is empty!');
         return false;
@@ -18,15 +21,18 @@ const handleLogin = (e) => {
     return false;
 }
 
+//Handles the signup post request using the helper sendPost function
 const handleSignup = (e) => {
     e.preventDefault();
     helper.hideError();
 
+    //Retrieves data from signup form
     const username = e.target.querySelector('#user').value;
     const pass = e.target.querySelector('#pass').value;
     const pass2 = e.target.querySelector('#pass2').value;
     const _csrf = e.target.querySelector('#_csrf').value;
 
+    //Check to see if both username and passwords have been entered as well as if passwords match
     if(!username || !pass || !pass2) {
         helper.handleError('All fields are required!');
         return false;
@@ -42,6 +48,7 @@ const handleSignup = (e) => {
     return false;
 }
 
+//Returns Login Form
 const LoginWindow = (props) => {
     return (
         <form id="loginForm"
@@ -61,6 +68,7 @@ const LoginWindow = (props) => {
     );
 };
 
+//Returns Signup Form
 const SignupWindow = (props) => {
     return (
         <form id="signupForm"
@@ -82,6 +90,7 @@ const SignupWindow = (props) => {
     );
 };
 
+//Intializes login and signup forms
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();

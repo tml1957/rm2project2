@@ -1,12 +1,16 @@
 const helper = require('./helper.js');
 
+//Handles Picto post requests using the helper sendPost function
 const handlePicto = (e) => {
     e.preventDefault();
     helper.hideError();
 
+    //Converts canvas data to a url
     const pictoURL = canvasURLData.toDataURL();
     const _csrf = e.target.querySelector('#_csrf').value;
 
+    //Check to see which border color is selected from the form
+    //If user hasn't puschased borders, default to black
     let borderColor;
     if (allowBorder)
         borderColor = e.target.querySelector('#borderChooser').value;
@@ -18,10 +22,14 @@ const handlePicto = (e) => {
     return false;
 };
 
+//Filler function that I am using because I just needed a handler function after a post here
+//Dont judge me I'm trying
 const Success = () => {
     console.log("successful post!");
 };
 
+//Returns Picto form
+//Canvas and control tools courtesy of Tony Jefferson's drawing app starter code
 const PictoForm = (props) => {
     return ( 
         <div>
@@ -90,9 +98,12 @@ const PictoForm = (props) => {
     );
 };
 
+//Variables to check if users have purchased expansion packs
 let allowBorder = true;
 let allowColor = true;
 
+//Sends get request to check if user has purchased borders
+//If they havent, remove controls from the form
 const checkBorderStatus = async () => {
     const response = await fetch('/getBorder');
     const data = await response.json();
@@ -104,6 +115,8 @@ const checkBorderStatus = async () => {
     }
 };
 
+//Sends get request to check if user has purchased colors
+//If they havent, remove controls from the form
 const checkColorStatus = async () => {
     const response = await fetch('/getColor');
     const data = await response.json();
@@ -115,6 +128,7 @@ const checkColorStatus = async () => {
     }
 };
 
+//Initalizes the picto form and calls to check the purchase status alongside initalizing canvas
 const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
@@ -129,6 +143,10 @@ const init = async () => {
     checkColorStatus();
     canvasInit();
 };
+
+//THE FOLLOWING CODE WAS LIFTED FROM TONY JEFFERONS DRAWING APP STARTER CODE
+//Most of what is listed was a part of that starter code, with some additions being my own
+//I will attempt to indicate what I have added
 
 // GLOBALS
 let canvas,ctx,dragging=false,lineWidth,strokeStyle;

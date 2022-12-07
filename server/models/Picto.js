@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 let PictoModel = {};
 
+// Picto schema tracks owner, picto image data, the color of the border, and the created date
 const PictoSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.ObjectId,
@@ -22,11 +23,13 @@ const PictoSchema = new mongoose.Schema({
   },
 });
 
+// toAPI function
 PictoSchema.statics.toAPI = (doc) => ({
   pictoURL: doc.pictoURL,
   borderColor: doc.borderColor,
 });
 
+// Retrieves only the user's pictos
 PictoSchema.statics.findByOwner = (ownerId, callback) => {
   const search = {
     // Convert the string ownerID to an object id
@@ -36,6 +39,7 @@ PictoSchema.statics.findByOwner = (ownerId, callback) => {
   return PictoModel.find(search).select('pictoURL borderColor').lean().exec(callback);
 };
 
+// Retrieves all pictos
 PictoSchema.statics.findAll = (callback) => PictoModel.find().select('pictoURL borderColor').lean().exec(callback);
 
 PictoModel = mongoose.model('Picto', PictoSchema);
